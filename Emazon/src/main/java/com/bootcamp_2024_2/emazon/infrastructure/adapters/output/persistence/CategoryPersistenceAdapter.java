@@ -29,6 +29,16 @@ public class CategoryPersistenceAdapter implements CategoryPersistencePort {
     }
 
     @Override
+    public List<Category> findAllOrderedByNameAsc() {
+        return mapper.toCategoryList(repository.findAllOrderedByNameAsc());
+    }
+
+    @Override
+    public List<Category> findAllOrderedByNameDesc() {
+        return mapper.toCategoryList(repository.findAllOrderedByNameDesc());
+    }
+
+    @Override
     public Category save(Category category) {
         return mapper.toCategory(
                 repository.save(mapper.toCategoryEntity(category)));

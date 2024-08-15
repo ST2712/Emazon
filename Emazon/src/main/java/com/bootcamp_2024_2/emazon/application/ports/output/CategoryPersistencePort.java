@@ -9,6 +9,8 @@ public interface CategoryPersistencePort {
 
     Optional<Category> findById(Long id);
     List<Category> findAll();
+    List<Category> findAllOrderedByNameAsc();
+    List<Category> findAllOrderedByNameDesc();
     Category save(Category category);
     void deleteById(Long id);
 }

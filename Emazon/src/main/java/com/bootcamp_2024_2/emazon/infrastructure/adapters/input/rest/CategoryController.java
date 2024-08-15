@@ -30,6 +30,16 @@ public class CategoryController {
         return restMapper.toCategoryResponse(servicePort.findById(id));
     }
 
+    @GetMapping(path = "/v1/categoriesByNameAsc")
+    public List<CategoryResponse> getCategoriesByNameAsc() {
+        return restMapper.toCategoryResponseList(servicePort.findAllOrderedByNameAsc());
+    }
+
+    @GetMapping(path = "/v1/categoriesByNameDesc")
+    public List<CategoryResponse> getCategoriesByNameDesc() {
+        return restMapper.toCategoryResponseList(servicePort.findAllOrderedByNameDesc());
+    }
+
     @PostMapping(path = "/v1/createCategory")
     public ResponseEntity<CategoryResponse> createCategory(@Valid @RequestBody CategoryCreateRequest request){
         return ResponseEntity.status(HttpStatus.CREATED)

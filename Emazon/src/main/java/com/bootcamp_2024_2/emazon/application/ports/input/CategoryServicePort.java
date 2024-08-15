@@ -8,6 +8,8 @@ public interface CategoryServicePort {
 
     Category findById(Long id);
     List<Category> findAll();
+    List<Category> findAllOrderedByNameAsc();
+    List<Category> findAllOrderedByNameDesc();
     Category save(Category category);
     Category update(Long id, Category category);
     void deleteById(Long id);
