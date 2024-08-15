@@ -1,12 +1,10 @@
 package com.bootcamp_2024_2.emazon.application.ports.output;
 
 import com.bootcamp_2024_2.emazon.domain.model.Category;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public interface CategoryPersistencePort {
 
     Optional<Category> findById(Long id);
