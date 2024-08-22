@@ -2,9 +2,14 @@ package com.bootcamp_2024_2.emazon.infrastructure.adapters.output.persistence;
 
 import com.bootcamp_2024_2.emazon.application.ports.output.CategoryPersistencePort;
 import com.bootcamp_2024_2.emazon.domain.model.Category;
+import com.bootcamp_2024_2.emazon.infrastructure.adapters.output.persistence.entity.CategoryEntity;
 import com.bootcamp_2024_2.emazon.infrastructure.adapters.output.persistence.mapper.CategoryPersistenceMapper;
 import com.bootcamp_2024_2.emazon.infrastructure.adapters.output.persistence.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -24,18 +29,12 @@ public class CategoryPersistenceAdapter implements CategoryPersistencePort {
     }
 
     @Override
-    public List<Category> findAll() {
-        return mapper.toCategoryList(repository.findAll());
-    }
-
-    @Override
-    public List<Category> findAllOrderedByNameAsc() {
-        return mapper.toCategoryList(repository.findAllOrderedByNameAsc());
-    }
-
-    @Override
-    public List<Category> findAllOrderedByNameDesc() {
-        return mapper.toCategoryList(repository.findAllOrderedByNameDesc());
+    public Page<Category> findAll(Pageable pageable) {
+        Page<CategoryEntity> categoryEntities = repository.findAll(pageable);
+        List<Category> categories = categoryEntities.getContent().stream()
+                .map(mapper::toCategory)
+                .toList();
+        return new PageImpl<>(categories, pageable, categoryEntities.getTotalElements());
     }
 
     @Override

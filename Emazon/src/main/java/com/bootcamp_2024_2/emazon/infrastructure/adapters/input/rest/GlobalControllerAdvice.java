@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 import static com.bootcamp_2024_2.emazon.utils.ErrorCatalog.CATEGORY_NOT_FOUND;
 import static com.bootcamp_2024_2.emazon.utils.ErrorCatalog.INVALID_CATEGORY;

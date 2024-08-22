@@ -4,8 +4,9 @@ import com.bootcamp_2024_2.emazon.application.ports.input.CategoryServicePort;
 import com.bootcamp_2024_2.emazon.application.ports.output.CategoryPersistencePort;
 import com.bootcamp_2024_2.emazon.domain.exception.CategoryNotFoundException;
 import com.bootcamp_2024_2.emazon.domain.model.Category;
-import com.bootcamp_2024_2.emazon.infrastructure.adapters.output.persistence.entity.CategoryEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,18 +24,8 @@ public class CategoryService implements CategoryServicePort {
     }
 
     @Override
-    public List<Category> findAll() {
-        return persistencePort.findAll();
-    }
-
-    @Override
-    public List<Category> findAllOrderedByNameAsc() {
-        return persistencePort.findAllOrderedByNameAsc();
-    }
-
-    @Override
-    public List<Category> findAllOrderedByNameDesc() {
-        return persistencePort.findAllOrderedByNameDesc();
+    public Page<Category> findAll(Pageable pageable) {
+        return persistencePort.findAll(pageable);
     }
 
     @Override

@@ -6,6 +6,10 @@ import com.bootcamp_2024_2.emazon.infrastructure.adapters.input.rest.model.reque
 import com.bootcamp_2024_2.emazon.infrastructure.adapters.input.rest.model.response.CategoryResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,23 +25,16 @@ public class CategoryController {
     private final CategoryRestMapper restMapper;
 
     @GetMapping(path = "/v1/categories")
-    public List<CategoryResponse> getCategories() {
-        return restMapper.toCategoryResponseList(servicePort.findAll());
+    public Page<CategoryResponse> getCategories(@RequestParam(defaultValue = "name") String sortBy,
+                                                @RequestParam(defaultValue = "asc") String order) {
+        Sort sort = order.equals("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+        final Pageable pageable = PageRequest.of(0, 10, sort);
+        return restMapper.toCategoryResponseList(servicePort.findAll(pageable));
     }
 
     @GetMapping(path = "/v1/category/{id}")
     public CategoryResponse getCategory(@PathVariable Long id) {
         return restMapper.toCategoryResponse(servicePort.findById(id));
-    }
-
-    @GetMapping(path = "/v1/categoriesByNameAsc")
-    public List<CategoryResponse> getCategoriesByNameAsc() {
-        return restMapper.toCategoryResponseList(servicePort.findAllOrderedByNameAsc());
-    }
-
-    @GetMapping(path = "/v1/categoriesByNameDesc")
-    public List<CategoryResponse> getCategoriesByNameDesc() {
-        return restMapper.toCategoryResponseList(servicePort.findAllOrderedByNameDesc());
     }
 
     @PostMapping(path = "/v1/createCategory")
