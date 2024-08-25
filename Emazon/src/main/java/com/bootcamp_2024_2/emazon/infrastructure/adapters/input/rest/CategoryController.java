@@ -4,6 +4,12 @@ import com.bootcamp_2024_2.emazon.application.ports.input.CategoryServicePort;
 import com.bootcamp_2024_2.emazon.infrastructure.adapters.input.rest.mapper.CategoryRestMapper;
 import com.bootcamp_2024_2.emazon.infrastructure.adapters.input.rest.model.request.CategoryCreateRequest;
 import com.bootcamp_2024_2.emazon.infrastructure.adapters.input.rest.model.response.CategoryResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,7 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/categories")
@@ -25,33 +30,99 @@ public class CategoryController {
     private final CategoryRestMapper restMapper;
 
     @GetMapping(path = "/v1/categories")
-    public Page<CategoryResponse> getCategories(@RequestParam(defaultValue = "name") String sortBy,
-                                                @RequestParam(defaultValue = "asc") String order) {
+    @Operation(summary = "Retrieve paginated categories", description = "Returns a paginated list of categories sorted by the specified field and order.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved categories",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CategoryResponse.class))}),
+            @ApiResponse(responseCode = "400", description = "Invalid request parameters",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content)
+    })
+    public Page<CategoryResponse> getCategories(
+            @Parameter(description = "Field to sort by", example = "name")
+            @RequestParam(defaultValue = "name")String sortBy,
+            @Parameter(description = "Sort order: asc (ascending) or desc (descending)", example = "asc")
+            @RequestParam(defaultValue = "asc") String order) {
+
         Sort sort = order.equals("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
         final Pageable pageable = PageRequest.of(0, 10, sort);
         return restMapper.toCategoryResponseList(servicePort.findAll(pageable));
     }
 
     @GetMapping(path = "/v1/category/{id}")
-    public CategoryResponse getCategory(@PathVariable Long id) {
+    @Operation(summary = "Retrieve a category by ID", description = "Returns the details of a specific category identified by its ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the category",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CategoryResponse.class))}),
+            @ApiResponse(responseCode = "404", description = "Category not found",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content)
+    })
+    public CategoryResponse getCategory(
+            @Parameter(description = "ID of the category to be retrieved", example = "1")
+            @PathVariable Long id) {
         return restMapper.toCategoryResponse(servicePort.findById(id));
     }
 
     @PostMapping(path = "/v1/createCategory")
-    public ResponseEntity<CategoryResponse> createCategory(@Valid @RequestBody CategoryCreateRequest request){
+    @Operation(summary = "Create a new category", description = "Creates a new category with a unique name and description.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Category successfully created",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CategoryResponse.class))}),
+            @ApiResponse(responseCode = "400", description = "Invalid input data",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content)
+    })
+    public ResponseEntity<CategoryResponse> createCategory(
+            @Parameter(description = "Category data to be created", required = true)
+            @Valid @RequestBody CategoryCreateRequest request){
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(restMapper.toCategoryResponse(
                         servicePort.save(restMapper.toCategory(request))));
     }
 
     @PutMapping(path = "/v1/updateCategory/{id}")
-    public CategoryResponse updateCategory(@PathVariable Long id, @Valid @RequestBody CategoryCreateRequest request){
+    @Operation(summary = "Update an existing category", description = "Updates the name and description of an existing category by its ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Category successfully updated",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CategoryResponse.class))}),
+            @ApiResponse(responseCode = "400", description = "Invalid input data",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Category not found",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content)
+    })
+    public CategoryResponse updateCategory(
+            @Parameter(description = "ID of the category to be updated", required = true)
+            @PathVariable Long id,
+            @Parameter(description = "Updated category data", required = true)
+            @Valid @RequestBody CategoryCreateRequest request) {
         return restMapper.toCategoryResponse(
-                        servicePort.update(id, restMapper.toCategory(request)));
+                servicePort.update(id, restMapper.toCategory(request)));
     }
 
     @DeleteMapping(path = "/v1/deleteCategory/{id}")
-    public void deleteCategory(@PathVariable Long id){
+    @Operation(summary = "Delete a category", description = "Deletes a category by its ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Category successfully deleted",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Category not found",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content)
+    })
+    public ResponseEntity<Void> deleteCategory(
+            @Parameter(description = "ID of the category to be deleted", required = true)
+            @PathVariable Long id) {
         servicePort.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
