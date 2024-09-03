@@ -2,9 +2,10 @@ package com.bootcamp_2024_2.emazon.domain.usecase;
 
 import com.bootcamp_2024_2.emazon.domain.api.ICategoryServicePort;
 import com.bootcamp_2024_2.emazon.domain.model.Category;
+import com.bootcamp_2024_2.emazon.domain.model.CustomPage;
+import com.bootcamp_2024_2.emazon.domain.model.CustomPageable;
 import com.bootcamp_2024_2.emazon.domain.spi.ICategoryPersistencePort;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.bootcamp_2024_2.emazon.infrastructure.exception.CategoryNotFoundException;
 
 public class CategoryUseCase implements ICategoryServicePort {
 
@@ -17,11 +18,11 @@ public class CategoryUseCase implements ICategoryServicePort {
     @Override
     public Category findById(Long id) {
         return categoryPersistencePort.findById(id)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(CategoryNotFoundException::new);
     }
 
     @Override
-    public Page<Category> findAll(Pageable page) {
+    public CustomPage<Category> findAll(CustomPageable page) {
         return categoryPersistencePort.findAll(page);
     }
 
@@ -38,13 +39,13 @@ public class CategoryUseCase implements ICategoryServicePort {
                     savedCategory.setDescription(category.getDescription());
                     return categoryPersistencePort.save(savedCategory);
                 })
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(CategoryNotFoundException::new);
     }
 
     @Override
     public void deleteById(Long id) {
         if(categoryPersistencePort.findById(id).isEmpty()){
-            throw new RuntimeException();
+            throw new CategoryNotFoundException();
         }
         categoryPersistencePort.deleteById(id);
     }

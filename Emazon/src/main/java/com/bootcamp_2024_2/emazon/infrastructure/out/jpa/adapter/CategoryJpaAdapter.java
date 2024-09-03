@@ -1,7 +1,8 @@
 package com.bootcamp_2024_2.emazon.infrastructure.out.jpa.adapter;
 
-import com.bootcamp_2024_2.emazon.domain.api.ICategoryServicePort;
 import com.bootcamp_2024_2.emazon.domain.model.Category;
+import com.bootcamp_2024_2.emazon.domain.model.CustomPage;
+import com.bootcamp_2024_2.emazon.domain.model.CustomPageable;
 import com.bootcamp_2024_2.emazon.domain.spi.ICategoryPersistencePort;
 import com.bootcamp_2024_2.emazon.infrastructure.exception.CategoryNotFoundException;
 import com.bootcamp_2024_2.emazon.infrastructure.exception.NoDataFoundException;
@@ -10,7 +11,7 @@ import com.bootcamp_2024_2.emazon.infrastructure.out.jpa.mapper.CategoryEntityMa
 import com.bootcamp_2024_2.emazon.infrastructure.out.jpa.repository.ICategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -28,13 +29,24 @@ public class CategoryJpaAdapter implements ICategoryPersistencePort {
         return categoryEntityOptional.map(categoryEntityMapper::toCategory);
     }
 
+    private Pageable toPageable(CustomPageable customPageable) {
+        return PageRequest.of(customPageable.getPageNumber(), customPageable.getPageSize());
+    }
+
     @Override
-    public Page<Category> findAll(Pageable pageable) {
-        Page<CategoryEntity> categoryEntityPage = categoryRepository.findAll(pageable);
+    public CustomPage<Category> findAll(CustomPageable pageable) {
+        Pageable pageableJpa = toPageable(pageable);
+        Page<CategoryEntity> categoryEntityPage = categoryRepository.findAll(pageableJpa);
         if (categoryEntityPage.isEmpty()) {
             throw new NoDataFoundException();
         }
-        return categoryEntityMapper.toPage(categoryEntityPage);
+        List<Category> categories = categoryEntityMapper.toCategories(categoryEntityPage.getContent());
+        CustomPage<Category> customPage = new CustomPage<>();
+        customPage.setContent(categories);
+        customPage.setTotalElements(categoryEntityPage.getTotalElements());
+        customPage.setPageNumber(pageable.getPageNumber());
+        customPage.setPageSize(pageable.getPageSize());
+        return customPage;
     }
 
     @Override

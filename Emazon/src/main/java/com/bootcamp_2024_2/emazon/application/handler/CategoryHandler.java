@@ -6,11 +6,16 @@ import com.bootcamp_2024_2.emazon.application.mapper.CategoryRequestMapper;
 import com.bootcamp_2024_2.emazon.application.mapper.CategoryResponseMapper;
 import com.bootcamp_2024_2.emazon.domain.api.ICategoryServicePort;
 import com.bootcamp_2024_2.emazon.domain.model.Category;
+import com.bootcamp_2024_2.emazon.domain.model.CustomPage;
+import com.bootcamp_2024_2.emazon.domain.model.CustomPageable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,8 +33,11 @@ public class CategoryHandler implements ICategoryHandler {
     }
 
     @Override
-    public Page<CategoryResponse> findAll(Pageable page) {
-        return categoryResponseMapper.toResponseList(categoryServicePort.findAll(page));
+    public Page<CategoryResponse> findAll(Pageable pageable) {
+        CustomPageable customPageable = new CustomPageable(pageable.getPageNumber(), pageable.getPageSize());
+        CustomPage<Category> customPage = categoryServicePort.findAll(customPageable);
+        List<CategoryResponse> categoryResponses = categoryResponseMapper.toResponseList(customPage.getContent());
+        return new PageImpl<>(categoryResponses, pageable, customPage.getTotalElements());
     }
 
     @Override

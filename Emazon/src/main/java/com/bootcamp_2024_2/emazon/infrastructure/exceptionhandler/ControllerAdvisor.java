@@ -6,9 +6,9 @@ import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -16,7 +16,7 @@ import java.util.Collections;
 import static com.bootcamp_2024_2.emazon.infrastructure.exceptionhandler.ExceptionResponse.CATEGORY_NOT_FOUND;
 import static com.bootcamp_2024_2.emazon.infrastructure.exceptionhandler.ExceptionResponse.INVALID_CATEGORY;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class ControllerAdvisor {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
