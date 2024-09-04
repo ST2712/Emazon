@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +35,12 @@ public class CategoryHandler implements ICategoryHandler {
 
     @Override
     public Page<CategoryResponse> findAll(Pageable pageable) {
-        CustomPageable customPageable = new CustomPageable(pageable.getPageNumber(), pageable.getPageSize());
+        String sortBy = pageable.getSort().stream().findFirst()
+                .map(Sort.Order::getProperty).orElse("name");
+        String sortOrder = pageable.getSort().stream().findFirst()
+                .map(Sort.Order::getDirection).orElse(Sort.Direction.ASC).name().toLowerCase();
+
+        CustomPageable customPageable = new CustomPageable(pageable.getPageNumber(), pageable.getPageSize(), sortBy, sortOrder);
         CustomPage<Category> customPage = categoryServicePort.findAll(customPageable);
         List<CategoryResponse> categoryResponses = categoryResponseMapper.toResponseList(customPage.getContent());
         return new PageImpl<>(categoryResponses, pageable, customPage.getTotalElements());

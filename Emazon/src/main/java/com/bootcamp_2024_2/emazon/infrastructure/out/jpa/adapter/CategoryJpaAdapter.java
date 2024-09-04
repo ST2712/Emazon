@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,17 +30,19 @@ public class CategoryJpaAdapter implements ICategoryPersistencePort {
         return categoryEntityOptional.map(categoryEntityMapper::toCategory);
     }
 
-    private Pageable toPageable(CustomPageable customPageable) {
-        return PageRequest.of(customPageable.getPageNumber(), customPageable.getPageSize());
-    }
-
     @Override
     public CustomPage<Category> findAll(CustomPageable pageable) {
-        Pageable pageableJpa = toPageable(pageable);
+        Sort sort = pageable.getSortOrder().equalsIgnoreCase("desc") ?
+                Sort.by(pageable.getSortBy()).descending() :
+                Sort.by(pageable.getSortBy()).ascending();
+
+        Pageable pageableJpa = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
         Page<CategoryEntity> categoryEntityPage = categoryRepository.findAll(pageableJpa);
+
         if (categoryEntityPage.isEmpty()) {
             throw new NoDataFoundException();
         }
+
         List<Category> categories = categoryEntityMapper.toCategories(categoryEntityPage.getContent());
         CustomPage<Category> customPage = new CustomPage<>();
         customPage.setContent(categories);

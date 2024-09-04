@@ -10,4 +10,6 @@ import lombok.*;
 public class CustomPageable {
     private int pageNumber;
     private int pageSize;
+    private String sortBy;
+    private String sortOrder;
 }
