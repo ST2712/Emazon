@@ -39,14 +39,19 @@ public class CategoryRestController {
     })
     public Page<CategoryResponse> getCategories(
             @Parameter(description = "Field to sort by", example = "name")
-            @RequestParam(defaultValue = "name")String sortBy,
+            @RequestParam(defaultValue = "name") String sortBy,
             @Parameter(description = "Sort order: asc (ascending) or desc (descending)", example = "asc")
-            @RequestParam(defaultValue = "asc") String order) {
+            @RequestParam(defaultValue = "asc") String order,
+            @Parameter(description = "Page number to retrieve (0-based index)", example = "0")
+            @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Number of items per page", example = "10")
+            @RequestParam(defaultValue = "10") int size) {
 
         Sort sort = order.equals("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
-        final Pageable pageable = PageRequest.of(0, 10, sort);
+        final Pageable pageable = PageRequest.of(page, size, sort);
         return categoryHandler.findAll(pageable);
     }
+
 
     @GetMapping(path = "/v1/category/{id}")
     @Operation(summary = "Retrieve a category by ID", description = "Returns the details of a specific category identified by its ID.")

@@ -22,35 +22,35 @@ public class ControllerAdvisor {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(CategoryNotFoundException.class)
     public ErrorResponse handleCategoryNotFoundException() {
-        return ErrorResponse.builder()
-                .code(CATEGORY_NOT_FOUND.getCode())
-                .message(CATEGORY_NOT_FOUND.getMessage())
-                .timestamp(LocalDateTime.now())
-                .build();
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setCode(CATEGORY_NOT_FOUND.getCode());
+        errorResponse.setMessage(CATEGORY_NOT_FOUND.getMessage());
+        errorResponse.setTimestamp(LocalDateTime.now());
+        return errorResponse;
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
         BindingResult result  = exception.getBindingResult();
-        return ErrorResponse.builder()
-                .code(INVALID_CATEGORY.getCode())
-                .message(INVALID_CATEGORY.getMessage())
-                .details(result.getFieldErrors().stream()
-                        .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                        .toList())
-                .timestamp(LocalDateTime.now())
-                .build();
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setCode(INVALID_CATEGORY.getCode());
+        errorResponse.setMessage(INVALID_CATEGORY.getMessage());
+        errorResponse.setDetails(result.getFieldErrors().stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .toList());
+        errorResponse.setTimestamp(LocalDateTime.now());
+        return errorResponse;
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public ErrorResponse handleGenericError(Exception exception) {
-        return ErrorResponse.builder()
-                .code(ExceptionResponse.GENERIC_ERROR.getCode())
-                .message(ExceptionResponse.GENERIC_ERROR.getMessage())
-                .details(Collections.singletonList(exception.getMessage()))
-                .timestamp(LocalDateTime.now())
-                .build();
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setCode(ExceptionResponse.GENERIC_ERROR.getCode());
+        errorResponse.setMessage(ExceptionResponse.GENERIC_ERROR.getMessage());
+        errorResponse.setDetails(Collections.singletonList(exception.getMessage()));
+        errorResponse.setTimestamp(LocalDateTime.now());
+        return errorResponse;
     }
 }
