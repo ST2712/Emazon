@@ -2,8 +2,8 @@ package com.bootcamp_2024_2.emazon.application.handler;
 
 import com.bootcamp_2024_2.emazon.application.dto.request.CategoryRequest;
 import com.bootcamp_2024_2.emazon.application.dto.response.CategoryResponse;
-import com.bootcamp_2024_2.emazon.application.mapper.CategoryRequestMapper;
-import com.bootcamp_2024_2.emazon.application.mapper.CategoryResponseMapper;
+import com.bootcamp_2024_2.emazon.application.mapper.request.CategoryRequestMapper;
+import com.bootcamp_2024_2.emazon.application.mapper.response.CategoryResponseMapper;
 import com.bootcamp_2024_2.emazon.domain.api.ICategoryServicePort;
 import com.bootcamp_2024_2.emazon.domain.model.Category;
 import org.junit.jupiter.api.BeforeEach;
