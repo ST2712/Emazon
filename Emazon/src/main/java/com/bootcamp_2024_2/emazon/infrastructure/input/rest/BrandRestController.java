@@ -53,7 +53,7 @@ public class BrandRestController {
     }
 
 
-    @GetMapping(path = "/v1/brand/{id}")
+    @GetMapping(path = "/v1/brands/{id}")
     @Operation(summary = "Retrieve a brand by ID", description = "Returns the details of a specific brand identified by its ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved the brand",
@@ -70,7 +70,7 @@ public class BrandRestController {
         return brandHandler.findById(id);
     }
 
-    @PostMapping(path = "/v1/createBrand")
+    @PostMapping(path = "/v1/brands")
     @Operation(summary = "Create a new brand", description = "Creates a new brand with a unique name and description.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Brand successfully created",

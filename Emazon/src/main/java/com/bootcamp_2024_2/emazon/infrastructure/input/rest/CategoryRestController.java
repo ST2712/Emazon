@@ -53,7 +53,7 @@ public class CategoryRestController {
     }
 
 
-    @GetMapping(path = "/v1/category/{id}")
+    @GetMapping(path = "/v1/categories/{id}")
     @Operation(summary = "Retrieve a category by ID", description = "Returns the details of a specific category identified by its ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved the category",
@@ -70,7 +70,7 @@ public class CategoryRestController {
         return categoryHandler.findById(id);
     }
 
-    @PostMapping(path = "/v1/createCategory")
+    @PostMapping(path = "/v1/categories")
     @Operation(summary = "Create a new category", description = "Creates a new category with a unique name and description.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Category successfully created",
