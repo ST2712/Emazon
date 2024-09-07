@@ -9,6 +9,4 @@ public interface IBrandServicePort {
     Brand findById(Long id);
     CustomPage<Brand> findAll(CustomPageable page);
     Brand save(Brand category);
-    Brand update(Long id, Brand brand);
-    void deleteById(Long id);
 }

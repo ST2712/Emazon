@@ -87,43 +87,4 @@ public class BrandRestController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(brandHandler.save(request));
     }
-
-    @PutMapping(path = "/v1/updateBrand/{id}")
-    @Operation(summary = "Update an existing brand", description = "Updates the name and description of an existing brand by its ID.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Brand successfully updated",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = BrandResponse.class))}),
-            @ApiResponse(responseCode = "400", description = "Invalid input data",
-                    content = @Content),
-            @ApiResponse(responseCode = "404", description = "Brand not found",
-                    content = @Content),
-            @ApiResponse(responseCode = "500", description = "Internal server error",
-                    content = @Content)
-    })
-    public BrandResponse updateBrand(
-            @Parameter(description = "ID of the brand to be updated", required = true)
-            @PathVariable Long id,
-            @Parameter(description = "Updated brand data", required = true)
-            @Valid @RequestBody BrandRequest request) {
-        return brandHandler.update(id, request);
-    }
-
-    @DeleteMapping(path = "/v1/deleteBrand/{id}")
-    @Operation(summary = "Delete a brand", description = "Deletes a brand by its ID.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Brand successfully deleted",
-                    content = @Content),
-            @ApiResponse(responseCode = "404", description = "Brand not found",
-                    content = @Content),
-            @ApiResponse(responseCode = "500", description = "Internal server error",
-                    content = @Content)
-    })
-    public ResponseEntity<Void> deleteBrand(
-            @Parameter(description = "ID of the brand to be deleted", required = true)
-            @PathVariable Long id) {
-        brandHandler.deleteById(id);
-        return ResponseEntity.noContent().build();
-    }
-
 }

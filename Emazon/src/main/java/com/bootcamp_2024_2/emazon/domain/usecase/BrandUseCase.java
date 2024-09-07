@@ -30,22 +30,5 @@ public class BrandUseCase implements IBrandServicePort {
         return brandPersistencePort.save(category);
     }
 
-    @Override
-    public Brand update(Long id, Brand brand) {
-        return brandPersistencePort.findById(id)
-                .map(savedBrand -> {
-                    savedBrand.setName(brand.getName());
-                    savedBrand.setDescription(brand.getDescription());
-                    return brandPersistencePort.save(savedBrand);
-                })
-                .orElseThrow(BrandNotFoundException::new);
-    }
 
-    @Override
-    public void deleteById(Long id) {
-        if(brandPersistencePort.findById(id).isEmpty()){
-            throw new BrandNotFoundException();
-        }
-        brandPersistencePort.deleteById(id);
-    }
 }

@@ -11,5 +11,4 @@ public interface IBrandPersistencePort {
     Optional<Brand> findById(Long id);
     CustomPage<Brand> findAll(CustomPageable page);
     Brand save(Brand brand);
-    void deleteById(Long id);
 }

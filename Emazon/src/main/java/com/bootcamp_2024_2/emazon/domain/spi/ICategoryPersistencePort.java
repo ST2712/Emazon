@@ -11,5 +11,4 @@ public interface ICategoryPersistencePort {
     Optional<Category> findById(Long id);
     CustomPage<Category> findAll(CustomPageable page);
     Category save(Category category);
-    void deleteById(Long id);
 }

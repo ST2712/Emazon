@@ -59,11 +59,4 @@ public class CategoryJpaAdapter implements ICategoryPersistencePort {
         return categoryEntityMapper.toCategory(savedCategoryEntity);
     }
 
-    @Override
-    public void deleteById(Long id) {
-        if (!categoryRepository.existsById(id)) {
-            throw new CategoryNotFoundException();
-        }
-        categoryRepository.deleteById(id);
-    }
 }

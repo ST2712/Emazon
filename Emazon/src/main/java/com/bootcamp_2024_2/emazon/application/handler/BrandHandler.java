@@ -51,14 +51,4 @@ public class BrandHandler implements IBrandHandler {
         return brandResponseMapper.toResponse(brandServicePort.save(brandRequestMapper.toBrand(category)));
     }
 
-    @Override
-    public BrandResponse update(Long id, BrandRequest category) {
-        return brandResponseMapper.toResponse(brandServicePort.update(id,
-                brandRequestMapper.toBrand(category)));
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        brandServicePort.deleteById(id);
-    }
 }

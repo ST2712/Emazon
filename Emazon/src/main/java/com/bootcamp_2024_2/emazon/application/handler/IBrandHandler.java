@@ -10,6 +10,4 @@ public interface IBrandHandler {
     BrandResponse findById(Long id);
     Page<BrandResponse> findAll(Pageable page);
     BrandResponse save(BrandRequest category);
-    BrandResponse update(Long id, BrandRequest category);
-    void deleteById(Long id);
 }

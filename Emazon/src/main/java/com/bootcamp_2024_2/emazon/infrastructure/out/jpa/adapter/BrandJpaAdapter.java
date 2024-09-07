@@ -58,11 +58,4 @@ public class BrandJpaAdapter implements IBrandPersistencePort {
         return brandEntityMapper.toBrand(savedBrandEntity);
     }
 
-    @Override
-    public void deleteById(Long id) {
-        if (!brandRepository.existsById(id)) {
-            throw new NoDataFoundException();
-        }
-        brandRepository.deleteById(id);
-    }
 }

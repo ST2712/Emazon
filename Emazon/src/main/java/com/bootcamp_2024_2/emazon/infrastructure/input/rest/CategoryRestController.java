@@ -87,43 +87,4 @@ public class CategoryRestController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(categoryHandler.save(request));
     }
-
-    @PutMapping(path = "/v1/updateCategory/{id}")
-    @Operation(summary = "Update an existing category", description = "Updates the name and description of an existing category by its ID.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Category successfully updated",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CategoryResponse.class))}),
-            @ApiResponse(responseCode = "400", description = "Invalid input data",
-                    content = @Content),
-            @ApiResponse(responseCode = "404", description = "Category not found",
-                    content = @Content),
-            @ApiResponse(responseCode = "500", description = "Internal server error",
-                    content = @Content)
-    })
-    public CategoryResponse updateCategory(
-            @Parameter(description = "ID of the category to be updated", required = true)
-            @PathVariable Long id,
-            @Parameter(description = "Updated category data", required = true)
-            @Valid @RequestBody CategoryRequest request) {
-        return categoryHandler.update(id, request);
-    }
-
-    @DeleteMapping(path = "/v1/deleteCategory/{id}")
-    @Operation(summary = "Delete a category", description = "Deletes a category by its ID.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Category successfully deleted",
-                    content = @Content),
-            @ApiResponse(responseCode = "404", description = "Category not found",
-                    content = @Content),
-            @ApiResponse(responseCode = "500", description = "Internal server error",
-                    content = @Content)
-    })
-    public ResponseEntity<Void> deleteCategory(
-            @Parameter(description = "ID of the category to be deleted", required = true)
-            @PathVariable Long id) {
-        categoryHandler.deleteById(id);
-        return ResponseEntity.noContent().build();
-    }
-
 }

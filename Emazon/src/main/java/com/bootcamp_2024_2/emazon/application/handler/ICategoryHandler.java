@@ -13,6 +13,4 @@ public interface ICategoryHandler {
     CategoryResponse findById(Long id);
     Page<CategoryResponse> findAll(Pageable page);
     CategoryResponse save(CategoryRequest category);
-    CategoryResponse update(Long id, CategoryRequest category);
-    void deleteById(Long id);
 }

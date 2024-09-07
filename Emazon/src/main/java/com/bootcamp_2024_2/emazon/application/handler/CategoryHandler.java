@@ -51,14 +51,4 @@ public class CategoryHandler implements ICategoryHandler {
         return categoryResponseMapper.toResponse(categoryServicePort.save(categoryRequestMapper.toCategory(category)));
     }
 
-    @Override
-    public CategoryResponse update(Long id, CategoryRequest category) {
-        return categoryResponseMapper.toResponse(categoryServicePort.update(id,
-                categoryRequestMapper.toCategory(category)));
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        categoryServicePort.deleteById(id);
-    }
 }

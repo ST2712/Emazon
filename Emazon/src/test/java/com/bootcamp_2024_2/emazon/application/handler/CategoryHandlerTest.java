@@ -77,38 +77,4 @@ class CategoryHandlerTest {
         verify(categoryResponseMapper).toResponse(category);
     }
 
-    @Test
-    void testUpdate() {
-        Long id = 1L;
-        CategoryRequest request = new CategoryRequest();
-        request.setName("Clothing");
-        request.setDescription("Stay stylish with our clothing range.");
-        Category category = new Category(id, "Clothing", "Stay stylish with our clothing range.");
-        CategoryResponse response = new CategoryResponse();
-        response.setId(id);
-        response.setName("Clothing");
-        response.setDescription("Stay stylish with our clothing range.");
-
-        when(categoryRequestMapper.toCategory(request)).thenReturn(category);
-        when(categoryServicePort.update(id, category)).thenReturn(category);
-        when(categoryResponseMapper.toResponse(category)).thenReturn(response);
-
-        CategoryResponse result = categoryHandler.update(id, request);
-
-        assertEquals(response, result);
-        verify(categoryRequestMapper).toCategory(request);
-        verify(categoryServicePort).update(id, category);
-        verify(categoryResponseMapper).toResponse(category);
-    }
-
-    @Test
-    void testDeleteById() {
-        Long id = 1L;
-
-        doNothing().when(categoryServicePort).deleteById(id);
-
-        categoryHandler.deleteById(id);
-
-        verify(categoryServicePort).deleteById(id);
-    }
 }

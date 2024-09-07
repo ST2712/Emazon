@@ -31,22 +31,4 @@ public class CategoryUseCase implements ICategoryServicePort {
         return categoryPersistencePort.save(category);
     }
 
-    @Override
-    public Category update(Long id, Category category) {
-        return categoryPersistencePort.findById(id)
-                .map(savedCategory -> {
-                    savedCategory.setName(category.getName());
-                    savedCategory.setDescription(category.getDescription());
-                    return categoryPersistencePort.save(savedCategory);
-                })
-                .orElseThrow(CategoryNotFoundException::new);
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        if(categoryPersistencePort.findById(id).isEmpty()){
-            throw new CategoryNotFoundException();
-        }
-        categoryPersistencePort.deleteById(id);
-    }
 }
