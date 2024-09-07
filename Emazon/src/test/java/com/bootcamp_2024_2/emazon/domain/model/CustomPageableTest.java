@@ -1,14 +1,22 @@
 package com.bootcamp_2024_2.emazon.domain.model;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class CustomPageableTest {
 
+    private CustomPageable customPageable;
+
+    @BeforeEach
+    void setUp() {
+        customPageable = new CustomPageable();
+    }
+
     @Test
     void customPageableBuilderTest() {
-        CustomPageable customPageable = new CustomPageable(0, 10, "name", "asc");
+        customPageable = new CustomPageable(0, 10, "name", "asc");
 
         assertEquals(0, customPageable.getPageNumber());
         assertEquals(10, customPageable.getPageSize());
@@ -18,7 +26,6 @@ class CustomPageableTest {
 
     @Test
     void customPageableSettersTest() {
-        CustomPageable customPageable = new CustomPageable();
         customPageable.setPageNumber(1);
         customPageable.setPageSize(20);
         customPageable.setSortBy("description");
@@ -30,4 +37,3 @@ class CustomPageableTest {
         assertEquals("desc", customPageable.getSortOrder());
     }
 }
-

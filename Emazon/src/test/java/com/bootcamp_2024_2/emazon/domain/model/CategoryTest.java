@@ -1,14 +1,22 @@
 package com.bootcamp_2024_2.emazon.domain.model;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CategoryTest {
 
+    private Category category;
+
+    @BeforeEach
+    void setUp() {
+        category = new Category();
+    }
+
     @Test
     void categoryBuilderTest() {
-        Category category = new Category(1L, "Clothing", "Fashionable items");
+        category = new Category(1L, "Clothing", "Fashionable items");
 
         assertEquals(1L, category.getId());
         assertEquals("Clothing", category.getName());
@@ -17,7 +25,6 @@ class CategoryTest {
 
     @Test
     void categorySettersTest() {
-        Category category = new Category();
         category.setId(1L);
         category.setName("Electronics");
         category.setDescription("Gadgets and devices");
@@ -27,4 +34,3 @@ class CategoryTest {
         assertEquals("Gadgets and devices", category.getDescription());
     }
 }
-

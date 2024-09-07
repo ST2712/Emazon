@@ -26,15 +26,21 @@ class CategoryUseCaseTest {
     @InjectMocks
     private CategoryUseCase categoryUseCase;
 
+    private Category category;
+    private CustomPageable pageable;
+    private CustomPage<Category> customPage;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+
+        category = new Category(1L, "Clothing", "Fashionable items");
+        pageable = new CustomPageable(0, 10, "name", "asc");
+        customPage = new CustomPage<>(Collections.singletonList(category), 0, 10, 1, 1, true);
     }
 
     @Test
     void findById_CategoryExists_ReturnsCategory() {
-
-        Category category = new Category(1L, "Clothing", "Fashionable items");
         when(categoryPersistencePort.findById(1L)).thenReturn(Optional.of(category));
 
         Category result = categoryUseCase.findById(1L);
@@ -48,7 +54,6 @@ class CategoryUseCaseTest {
 
     @Test
     void findById_CategoryDoesNotExist_ThrowsException() {
-
         when(categoryPersistencePort.findById(1L)).thenReturn(Optional.empty());
 
         assertThrows(CategoryNotFoundException.class, () -> categoryUseCase.findById(1L));
@@ -57,17 +62,9 @@ class CategoryUseCaseTest {
 
     @Test
     void findAll_ReturnsCustomPageOfCategories() {
-
-        CustomPageable pageable = new CustomPageable();
-        pageable.setPageNumber(0);
-        pageable.setPageSize(10);
-        Category category = new Category(1L, "Clothing", "Fashionable items");
-        CustomPage<Category> customPage = new CustomPage<>(Collections.singletonList(category), 0, 10, 1, 1, true);
         when(categoryPersistencePort.findAll(pageable)).thenReturn(customPage);
 
-
         CustomPage<Category> result = categoryUseCase.findAll(pageable);
-
 
         assertNotNull(result);
         assertEquals(1, result.getTotalElements());
@@ -78,13 +75,9 @@ class CategoryUseCaseTest {
 
     @Test
     void save_CategoryIsSaved_ReturnsSavedCategory() {
-
-        Category category = new Category(1L, "Clothing", "Fashionable items");
         when(categoryPersistencePort.save(any(Category.class))).thenReturn(category);
 
-
         Category result = categoryUseCase.save(category);
-
 
         assertNotNull(result);
         assertEquals("Clothing", result.getName());

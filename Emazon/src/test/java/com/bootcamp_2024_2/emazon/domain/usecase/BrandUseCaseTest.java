@@ -25,15 +25,21 @@ class BrandUseCaseTest {
     @InjectMocks
     private BrandUseCase brandUseCase;
 
+    private Brand brand;
+    private CustomPageable pageable;
+    private CustomPage<Brand> customPage;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+
+        brand = new Brand(1L, "Nike", "Just do it");
+        pageable = new CustomPageable(0, 10, "name", "asc");
+        customPage = new CustomPage<>(Collections.singletonList(brand), 0, 10, 1, 1, true);
     }
 
     @Test
-    void findByYd_BrandsExists_ReturnsBrand() {
-
-        Brand brand = new Brand(1L, "Nike", "Just do it");
+    void findById_BrandExists_ReturnsBrand() {
         when(brandPersistencePort.findById(1L)).thenReturn(Optional.of(brand));
 
         Brand result = brandUseCase.findById(1L);
@@ -47,7 +53,6 @@ class BrandUseCaseTest {
 
     @Test
     void findById_BrandDoesNotExist_ThrowsException() {
-
         when(brandPersistencePort.findById(1L)).thenReturn(Optional.empty());
 
         assertThrows(BrandNotFoundException.class, () -> brandUseCase.findById(1L));
@@ -56,27 +61,19 @@ class BrandUseCaseTest {
 
     @Test
     void findAll_ReturnsCustomPageOfBrands() {
-
-        CustomPageable pageable = new CustomPageable();
-        pageable.setPageNumber(0);
-        pageable.setPageSize(10);
-        Brand brand = new Brand(1L, "Nike", "Just do it");
-        CustomPage<Brand> customPage = new CustomPage<>(Collections.singletonList(brand), 0, 10, 1, 1, true);
         when(brandPersistencePort.findAll(pageable)).thenReturn(customPage);
 
         CustomPage<Brand> result = brandUseCase.findAll(pageable);
 
         assertNotNull(result);
         assertEquals(1, result.getContent().size());
-        assertEquals(1, result.getTotalElements());
+        assertEquals(1L, result.getTotalElements());
         assertEquals(brand, result.getContent().get(0));
         verify(brandPersistencePort, times(1)).findAll(pageable);
     }
 
     @Test
-    void save_BrandIsSaved_ReturnSavedBrand() {
-
-        Brand brand = new Brand(1L, "Nike", "Just do it");
+    void save_BrandIsSaved_ReturnsSavedBrand() {
         when(brandPersistencePort.save(any(Brand.class))).thenReturn(brand);
 
         Brand result = brandUseCase.save(brand);

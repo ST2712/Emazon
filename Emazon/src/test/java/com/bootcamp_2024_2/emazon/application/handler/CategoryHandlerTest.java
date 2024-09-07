@@ -29,52 +29,56 @@ class CategoryHandlerTest {
     @InjectMocks
     private CategoryHandler categoryHandler;
 
+    private Category category;
+    private CategoryRequest categoryRequest;
+    private CategoryResponse categoryResponse;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+
+        category = new Category(1L, "Clothing", "Stay stylish with our clothing range.");
+        categoryRequest = new CategoryRequest();
+        categoryRequest.setName("Clothing");
+        categoryRequest.setDescription("Stay stylish with our clothing range.");
+
+        categoryResponse = new CategoryResponse();
+        categoryResponse.setId(1L);
+        categoryResponse.setName("Clothing");
+        categoryResponse.setDescription("Stay stylish with our clothing range.");
     }
 
     @Test
     void testFindById() {
         Long id = 1L;
-        Category category = new Category(id, "Clothing", "Stay stylish with our clothing range.");
-        CategoryResponse response = new CategoryResponse();
-        response.setId(id);
-        response.setName("Clothing");
-        response.setDescription("Stay stylish with our clothing range.");
 
         when(categoryServicePort.findById(id)).thenReturn(category);
-        when(categoryResponseMapper.toResponse(category)).thenReturn(response);
+        when(categoryResponseMapper.toResponse(category)).thenReturn(categoryResponse);
 
         CategoryResponse result = categoryHandler.findById(id);
 
-        assertEquals(response, result);
+        assertEquals(categoryResponse, result);
         verify(categoryServicePort).findById(id);
         verify(categoryResponseMapper).toResponse(category);
     }
 
-
     @Test
     void testSave() {
-        CategoryRequest request = new CategoryRequest();
-        request.setName("Clothing");
-        request.setDescription("Stay stylish with our clothing range.");
-        Category category = new Category(null, "Clothing", "Stay stylish with our clothing range.");
-        CategoryResponse response = new CategoryResponse();
-        response.setId(1L);
-        response.setName("Clothing");
-        response.setDescription("Stay stylish with our clothing range.");
+        Category categoryToSave = new Category(null, "Clothing", "Stay stylish with our clothing range.");
+        CategoryResponse expectedResponse = new CategoryResponse();
+        expectedResponse.setId(1L);
+        expectedResponse.setName("Clothing");
+        expectedResponse.setDescription("Stay stylish with our clothing range.");
 
-        when(categoryRequestMapper.toCategory(request)).thenReturn(category);
-        when(categoryServicePort.save(category)).thenReturn(category);
-        when(categoryResponseMapper.toResponse(category)).thenReturn(response);
+        when(categoryRequestMapper.toCategory(categoryRequest)).thenReturn(categoryToSave);
+        when(categoryServicePort.save(categoryToSave)).thenReturn(category);
+        when(categoryResponseMapper.toResponse(category)).thenReturn(expectedResponse);
 
-        CategoryResponse result = categoryHandler.save(request);
+        CategoryResponse result = categoryHandler.save(categoryRequest);
 
-        assertEquals(response, result);
-        verify(categoryRequestMapper).toCategory(request);
-        verify(categoryServicePort).save(category);
+        assertEquals(expectedResponse, result);
+        verify(categoryRequestMapper).toCategory(categoryRequest);
+        verify(categoryServicePort).save(categoryToSave);
         verify(categoryResponseMapper).toResponse(category);
     }
-
 }

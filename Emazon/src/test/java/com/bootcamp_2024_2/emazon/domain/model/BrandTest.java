@@ -1,14 +1,22 @@
 package com.bootcamp_2024_2.emazon.domain.model;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class BrandTest {
 
+    private Brand brand;
+
+    @BeforeEach
+    void setUp() {
+        brand = new Brand();
+    }
+
     @Test
     void brandBuilderTest() {
-        Brand brand = new Brand(1L, "Nike", "Just do it");
+        brand = new Brand(1L, "Nike", "Just do it");
 
         assertEquals(1L, brand.getId());
         assertEquals("Nike", brand.getName());
@@ -16,8 +24,7 @@ class BrandTest {
     }
 
     @Test
-    void BrandSettersTest() {
-        Brand brand = new Brand();
+    void brandSettersTest() {
         brand.setId(1L);
         brand.setName("Adidas");
         brand.setDescription("Impossible is nothing");
