@@ -1,6 +1,7 @@
 package com.bootcamp_2024_2.emazon.infrastructure.exceptionhandler;
 
 import com.bootcamp_2024_2.emazon.domain.model.ErrorResponse;
+import com.bootcamp_2024_2.emazon.infrastructure.exception.ArticleNotFoundException;
 import com.bootcamp_2024_2.emazon.infrastructure.exception.BrandNotFoundException;
 import com.bootcamp_2024_2.emazon.infrastructure.exception.CategoryNotFoundException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -36,6 +37,16 @@ public class ControllerAdvisor {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setCode(ExceptionResponse.BRAND_NOT_FOUND.getCode());
         errorResponse.setMessage(ExceptionResponse.BRAND_NOT_FOUND.getMessage());
+        errorResponse.setTimestamp(LocalDateTime.now());
+        return errorResponse;
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(ArticleNotFoundException.class)
+    public ErrorResponse handleArticleNotFoundException() {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setCode(ExceptionResponse.ARTICLE_NOT_FOUND.getCode());
+        errorResponse.setMessage(ExceptionResponse.ARTICLE_NOT_FOUND.getMessage());
         errorResponse.setTimestamp(LocalDateTime.now());
         return errorResponse;
     }

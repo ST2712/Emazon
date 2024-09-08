@@ -9,6 +9,8 @@ public enum ExceptionResponse {
     INVALID_CATEGORY("ERR_CATEGORY_002", "Invalid category parameters."),
     BRAND_NOT_FOUND("ERR_BRAND_001", "Brand not found."),
     INVALID_BRAND("ERR_BRAND_002", "Invalid brand parameters."),
+    ARTICLE_NOT_FOUND("ERR_ARTICLE_001", "Article not found."),
+    INVALID_ARTICLE("ERR_ARTICLE_002", "Invalid article parameters."),
     GENERIC_ERROR("ERR_GENERIC_001", "An unexpected error occurred.");
 
     private final String code;

@@ -13,18 +13,26 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "categories")
-public class CategoryEntity {
+@Table(name = "articles")
+public class ArticleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
     private String name;
 
     private String description;
 
-    @ManyToMany(mappedBy = "categories")
-    private List<ArticleEntity> articles;
+    private int quantity;
+
+    private double price;
+
+    @ManyToMany
+    @JoinTable(
+            name = "article_categories",
+            joinColumns = @JoinColumn(name = "article_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private List<CategoryEntity> categories;
 }
