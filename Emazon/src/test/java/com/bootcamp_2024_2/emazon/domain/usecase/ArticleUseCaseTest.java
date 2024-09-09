@@ -1,6 +1,8 @@
 package com.bootcamp_2024_2.emazon.domain.usecase;
 
 import com.bootcamp_2024_2.emazon.domain.model.Article;
+import com.bootcamp_2024_2.emazon.domain.model.Brand;
+import com.bootcamp_2024_2.emazon.domain.model.Category;
 import com.bootcamp_2024_2.emazon.domain.model.CustomPage;
 import com.bootcamp_2024_2.emazon.domain.model.CustomPageable;
 import com.bootcamp_2024_2.emazon.domain.spi.IArticlePersistencePort;
@@ -12,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,8 +35,13 @@ class ArticleUseCaseTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        Brand brand = new Brand(1L, "Sample Brand", "This is a sample brand");
+        List<Category> categories = List.of(
+                new Category(1L, "Electronics", "Latest gadgets"),
+                new Category(2L, "Home & Garden", "Decor items")
+        );
 
-        article = new Article(1L, "Smartphone", "High-end smartphone", 50, 999.99, Collections.emptyList());
+        article = new Article(1L, "Smartphone", "High-end smartphone", 50, 999.99, brand, categories);
         pageable = new CustomPageable(0, 10, "name", "asc");
         customPage = new CustomPage<>(Collections.singletonList(article), 0, 10, 1, 1, true);
     }

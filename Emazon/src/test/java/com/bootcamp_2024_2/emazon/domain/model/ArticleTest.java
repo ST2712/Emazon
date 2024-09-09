@@ -11,14 +11,18 @@ class ArticleTest {
 
     private Article article;
     private List<Category> categories;
+    private Brand brand;
 
     @BeforeEach
     void setUp() {
+        brand = new Brand(1L, "Sample Brand", "This is a sample brand");
+
         categories = List.of(
                 new Category(1L, "Electronics", "Latest gadgets"),
                 new Category(2L, "Home & Garden", "Decor items")
         );
-        article = new Article(1L, "Smartphone", "High-end smartphone", 50, 999.99, categories);
+
+        article = new Article(1L, "Smartphone", "High-end smartphone", 50, 999.99, brand, categories);
     }
 
     @Test
@@ -74,6 +78,18 @@ class ArticleTest {
     void setPriceTest() {
         article.setPrice(499.99);
         assertEquals(499.99, article.getPrice());
+    }
+
+    @Test
+    void getBrandTest() {
+        assertEquals(brand, article.getBrand());
+    }
+
+    @Test
+    void setBrandTest() {
+        Brand newBrand = new Brand(2L, "New Brand", "New brand description");
+        article.setBrand(newBrand);
+        assertEquals(newBrand, article.getBrand());
     }
 
     @Test
