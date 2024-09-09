@@ -4,7 +4,6 @@ import com.bootcamp_2024_2.emazon.domain.model.Category;
 import com.bootcamp_2024_2.emazon.domain.model.CustomPage;
 import com.bootcamp_2024_2.emazon.domain.model.CustomPageable;
 import com.bootcamp_2024_2.emazon.domain.spi.ICategoryPersistencePort;
-import com.bootcamp_2024_2.emazon.infrastructure.exception.CategoryNotFoundException;
 import com.bootcamp_2024_2.emazon.infrastructure.exception.NoDataFoundException;
 import com.bootcamp_2024_2.emazon.infrastructure.out.jpa.entity.CategoryEntity;
 import com.bootcamp_2024_2.emazon.infrastructure.out.jpa.mapper.CategoryEntityMapper;

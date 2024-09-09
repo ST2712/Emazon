@@ -2,12 +2,10 @@ package com.bootcamp_2024_2.emazon.application.handler;
 
 import com.bootcamp_2024_2.emazon.application.dto.request.ArticleRequest;
 import com.bootcamp_2024_2.emazon.application.dto.response.ArticleResponse;
-import com.bootcamp_2024_2.emazon.application.dto.response.BrandResponse;
 import com.bootcamp_2024_2.emazon.application.mapper.request.ArticleRequestMapper;
 import com.bootcamp_2024_2.emazon.application.mapper.response.ArticleResponseMapper;
 import com.bootcamp_2024_2.emazon.domain.api.IArticleServicePort;
 import com.bootcamp_2024_2.emazon.domain.model.Article;
-import com.bootcamp_2024_2.emazon.domain.model.Brand;
 import com.bootcamp_2024_2.emazon.domain.model.CustomPage;
 import com.bootcamp_2024_2.emazon.domain.model.CustomPageable;
 import lombok.RequiredArgsConstructor;
