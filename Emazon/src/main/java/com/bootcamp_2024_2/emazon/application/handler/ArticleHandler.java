@@ -40,10 +40,24 @@ public class ArticleHandler implements IArticleHandler{
         String sortOrder = pageable.getSort().stream().findFirst()
                 .map(Sort.Order::getDirection).orElse(Sort.Direction.ASC).name().toLowerCase();
 
+        sortBy = adjustSortByField(sortBy);
+
         CustomPageable customPageable = new CustomPageable(pageable.getPageNumber(), pageable.getPageSize(), sortBy, sortOrder);
+
         CustomPage<Article> customPage = articleServicePort.findAll(customPageable);
+
         List<ArticleResponse> articleResponses = articleResponseMapper.toResponseList(customPage.getContent());
+
         return new PageImpl<>(articleResponses, pageable, customPage.getTotalElements());
+    }
+
+    private String adjustSortByField(String sortBy) {
+        if ("brand".equalsIgnoreCase(sortBy)) {
+            return "brand.name";
+        } else if ("category".equalsIgnoreCase(sortBy)) {
+            return "categories.name";
+        }
+        return sortBy;
     }
 
     @Override
