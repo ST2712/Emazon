@@ -1,5 +1,6 @@
 package com.bootcamp_2024_2.emazon.application.dto.request;
 
+import com.bootcamp_2024_2.emazon.domain.model.Brand;
 import com.bootcamp_2024_2.emazon.domain.model.Category;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -25,6 +26,8 @@ public class ArticleRequest {
 
     @PositiveOrZero(message = "Price must be greater than or equal to 0")
     private double price;
+
+    private Brand brand;
 
     @NotEmpty(message = "At least one category is required")
     @Size(min = 1, max = 3, message = "There must be between 1 and 3 categories")

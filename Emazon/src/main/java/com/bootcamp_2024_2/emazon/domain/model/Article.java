@@ -9,14 +9,16 @@ public class Article {
     private String description;
     private int quantity;
     private double price;
+    private Brand brand;
     private List<Category> categories;
 
-    public Article(Long id, String name, String description, int quantity, double price, List<Category> categories) {
+    public Article(Long id, String name, String description, int quantity, double price, Brand brand, List<Category> categories) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.quantity = quantity;
         this.price = price;
+        this.brand = brand;
         this.categories = categories;
     }
 
@@ -61,6 +63,14 @@ public class Article {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public Brand getBrand() {
+        return brand;
+    }
+
+    public void setBrand(Brand brand) {
+        this.brand = brand;
     }
 
     public List<Category> getCategories() {

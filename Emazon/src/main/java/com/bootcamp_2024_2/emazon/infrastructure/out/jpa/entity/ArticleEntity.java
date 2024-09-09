@@ -28,7 +28,11 @@ public class ArticleEntity {
 
     private double price;
 
-    @ManyToMany
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "brand_id", nullable = false)
+    private BrandEntity brand;
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "article_categories",
             joinColumns = @JoinColumn(name = "article_id"),
