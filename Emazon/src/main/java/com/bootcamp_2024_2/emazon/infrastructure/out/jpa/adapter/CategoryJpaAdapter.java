@@ -38,10 +38,6 @@ public class CategoryJpaAdapter implements ICategoryPersistencePort {
         Pageable pageableJpa = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
         Page<CategoryEntity> categoryEntityPage = categoryRepository.findAll(pageableJpa);
 
-        if (categoryEntityPage.isEmpty()) {
-            throw new NoDataFoundException();
-        }
-
         List<Category> categories = categoryEntityMapper.toCategories(categoryEntityPage.getContent());
         CustomPage<Category> customPage = new CustomPage<>();
         customPage.setContent(categories);
