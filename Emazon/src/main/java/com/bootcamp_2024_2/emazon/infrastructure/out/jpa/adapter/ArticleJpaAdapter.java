@@ -39,10 +39,6 @@ public class ArticleJpaAdapter implements IArticlePersistencePort {
         Pageable pageableJpa = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
         Page<ArticleEntity> articleEntityPage = articleRepository.findAll(pageableJpa);
 
-        if (articleEntityPage.isEmpty()) {
-            throw new NoDataFoundException();
-        }
-
         List<Article> articles = articleEntityMapper.toArticles(articleEntityPage.getContent());
         CustomPage<Article> customPage = new CustomPage<>();
         customPage.setContent(articles);

@@ -23,6 +23,11 @@ import java.util.List;
 @Transactional
 public class ArticleHandler implements IArticleHandler{
 
+    private final String BRAND = "brand";
+    private final String CATEGORY = "category";
+    private final String BRAND_NAME = "brand.name";
+    private final String CATEGORY_NAME = "categories.name";
+
     private final IArticleServicePort articleServicePort;
     private final ArticleRequestMapper articleRequestMapper;
     private final ArticleResponseMapper articleResponseMapper;
@@ -35,8 +40,9 @@ public class ArticleHandler implements IArticleHandler{
 
     @Override
     public Page<ArticleResponse> findAll(Pageable pageable) {
+        String NAME = "name";
         String sortBy = pageable.getSort().stream().findFirst()
-                .map(Sort.Order::getProperty).orElse("name");
+                .map(Sort.Order::getProperty).orElse(NAME);
         String sortOrder = pageable.getSort().stream().findFirst()
                 .map(Sort.Order::getDirection).orElse(Sort.Direction.ASC).name().toLowerCase();
 
@@ -52,10 +58,10 @@ public class ArticleHandler implements IArticleHandler{
     }
 
     private String adjustSortByField(String sortBy) {
-        if ("brand".equalsIgnoreCase(sortBy)) {
-            return "brand.name";
-        } else if ("category".equalsIgnoreCase(sortBy)) {
-            return "categories.name";
+        if (BRAND.equalsIgnoreCase(sortBy)) {
+            return BRAND_NAME;
+        } else if (CATEGORY.equalsIgnoreCase(sortBy)) {
+            return CATEGORY_NAME;
         }
         return sortBy;
     }
