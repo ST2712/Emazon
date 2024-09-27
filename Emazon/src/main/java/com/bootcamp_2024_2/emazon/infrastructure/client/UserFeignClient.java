@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface UserFeignClient {
 
     @PostMapping(value = "/auth/login", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public LoginResponse login(LoginRequest loginRequest);
+    LoginResponse login(LoginRequest loginRequest);
 
     @PostMapping("/users/v1/users")
     UserResponse getUserByEmail(@RequestBody String email);

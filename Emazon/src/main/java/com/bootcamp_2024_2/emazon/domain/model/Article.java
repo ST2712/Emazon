@@ -9,17 +9,17 @@ public class Article {
     private String description;
     private int quantity;
     private double price;
-    private Brand brand;
-    private List<Category> categories;
+    private Long brandId;
+    private List<Long> categoriesIds;
 
-    public Article(Long id, String name, String description, int quantity, double price, Brand brand, List<Category> categories) {
+    public Article(Long id, String name, String description, int quantity, double price, Long brandId, List<Long> categoriesIds) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.quantity = quantity;
         this.price = price;
-        this.brand = brand;
-        this.categories = categories;
+        this.brandId = brandId;
+        this.categoriesIds = categoriesIds;
     }
 
     public Article() {
@@ -65,20 +65,20 @@ public class Article {
         this.price = price;
     }
 
-    public Brand getBrand() {
-        return brand;
+    public Long getBrandId() {
+        return brandId;
     }
 
-    public void setBrand(Brand brand) {
-        this.brand = brand;
+    public void setBrandId(Long brandId) {
+        this.brandId = brandId;
     }
 
-    public List<Category> getCategories() {
-        return categories;
+    public List<Long> getCategoriesIds() {
+        return categoriesIds;
     }
 
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
+    public void setCategoriesIds(List<Long> categoriesIds) {
+        this.categoriesIds = categoriesIds;
     }
 }
 

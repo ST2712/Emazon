@@ -2,6 +2,7 @@ package com.bootcamp_2024_2.emazon.application.mapper.response;
 
 import com.bootcamp_2024_2.emazon.application.dto.response.BrandResponse;
 import com.bootcamp_2024_2.emazon.domain.model.Brand;
+import com.bootcamp_2024_2.emazon.infrastructure.out.jpa.entity.BrandEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;

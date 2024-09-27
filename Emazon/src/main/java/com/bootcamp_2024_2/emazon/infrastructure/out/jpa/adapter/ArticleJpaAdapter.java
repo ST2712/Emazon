@@ -4,6 +4,7 @@ import com.bootcamp_2024_2.emazon.domain.model.Article;
 import com.bootcamp_2024_2.emazon.domain.model.CustomPage;
 import com.bootcamp_2024_2.emazon.domain.model.CustomPageable;
 import com.bootcamp_2024_2.emazon.domain.spi.IArticlePersistencePort;
+import com.bootcamp_2024_2.emazon.infrastructure.exception.CategoryRepeatedException;
 import com.bootcamp_2024_2.emazon.infrastructure.exception.NoDataFoundException;
 import com.bootcamp_2024_2.emazon.infrastructure.out.jpa.entity.ArticleEntity;
 import com.bootcamp_2024_2.emazon.infrastructure.out.jpa.entity.CategoryEntity;
@@ -15,8 +16,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RequiredArgsConstructor
 public class ArticleJpaAdapter implements IArticlePersistencePort {
@@ -51,13 +54,6 @@ public class ArticleJpaAdapter implements IArticlePersistencePort {
     @Override
     public Article save(Article article) {
         ArticleEntity articleEntity = articleEntityMapper.toEntity(article);
-
-        for(CategoryEntity categoryEntity : articleEntity.getCategories()) {
-            if (categoryEntity.getDescription() == null || categoryEntity.getDescription().isBlank()) {
-                throw new NoDataFoundException("Category cannot be empty or null");
-            }
-        }
-
         ArticleEntity savedArticleEntity = articleRepository.save(articleEntity);
         return articleEntityMapper.toArticle(savedArticleEntity);
     }

@@ -2,10 +2,7 @@ package com.bootcamp_2024_2.emazon.application.dto.request;
 
 import com.bootcamp_2024_2.emazon.domain.model.Brand;
 import com.bootcamp_2024_2.emazon.domain.model.Category;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,9 +24,10 @@ public class ArticleRequest {
     @PositiveOrZero(message = "Price must be greater than or equal to 0")
     private double price;
 
-    private Brand brand;
+    @Positive(message = "Brand id must be greater than 0")
+    private Long brandId;
 
     @NotEmpty(message = "At least one category is required")
     @Size(min = 1, max = 3, message = "There must be between 1 and 3 categories")
-    private List<Category> categories;
+    private List<Long> categoriesIds;
 }

@@ -7,7 +7,6 @@ import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ArticleEntityMapper {
     Article toArticle(ArticleEntity articleEntity);
     default List<Article> toArticles(List<ArticleEntity> articleEntities) {
